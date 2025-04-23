@@ -7,7 +7,8 @@ import re
 
 # ---------- env --------------------------------------------------
 load_dotenv()
-API_KEY = os.getenv("TOGETHER_API_KEY")
+# API_KEY = os.getenv("TOGETHER_API_KEY")
+API_KEY = "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
 if not API_KEY:
     raise ValueError("TOGETHER_API_KEY is not set in .env or env vars")
 
@@ -30,7 +31,7 @@ def home():
 @app.get("/quiz")
 def serve_quiz():
     # index.html is in the same folder as app.py
-    return send_from_directory(".", "index.html")
+    return send_from_directory("./templates/", "index.html")
 
 # ---------- API route -------------------------------------------
 CHARITIES = "# List of Charities\n\n" \
