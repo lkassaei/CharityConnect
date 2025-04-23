@@ -159,30 +159,8 @@ const charityList = [
           if (charityMatch && charityMatch[2]) {
             matchedCharity = charityMatch[2].trim();
           }
-  
-          // 2. Extract Description (specifically look for text after "- **Impact**:")
-          const impactDescriptionMatch = aiResult.match(/- \*\*Impact\*\*:\s*(.*?)(?:\nDonate|\nThis charity|\n|$)/si);
-          if (impactDescriptionMatch && impactDescriptionMatch[1]) {
-            description = impactDescriptionMatch[1].trim();
-          } else {
-            // Fallback to looking for "** Description:**"
-            const descriptionLabelMatch = aiResult.match(/\*\*Description:\*\*\s*(.*?)(?=\n\*\*Link:\*\*|\nThis charity|\n|$)/si);
-            if (descriptionLabelMatch && descriptionLabelMatch[1]) {
-              description = descriptionLabelMatch[1].trim();
-            } else {
-              // Fallback to previous more general attempts
-              let descriptionMatch;
-              if (matchedCharity) {
-                const escapedCharity = matchedCharity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                descriptionMatch = aiResult.match(new RegExp(`${escapedCharity}\\s*(.*?)(\\n(?:- \\*\\*Link\\*\\*|\\[|\n###|\\*\\*\\*)|$)`, 'si'));
-                if (descriptionMatch && descriptionMatch[1]) {
-                  description = descriptionMatch[1].trim().replace(/^- \*\*Description\*\*:\s*/i, '').trim();
-                }
-              }
-            }
-          }
-  
-          // 3. Extract Donation Link (look for "** Link:**" followed by a Markdown link or a URL)
+
+          // 2. Extract Donation Link from AI (as a fallback)
           const linkMatch = aiResult.match(/\*\*\s*Link:\*\*\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
           if (linkMatch && linkMatch[1]) {
             donationLink = linkMatch[1];
@@ -192,21 +170,35 @@ const charityList = [
               donationLink = linkUrlMatch[1];
             }
           }
-  
-          console.log("Parsed Charity:", matchedCharity);
-          console.log("Parsed Description:", description);
-          console.log("Parsed Donation Link:", donationLink);
-  
+          console.log("AI Extracted Link:", donationLink);
+          
           if (matchedCharity) {
+            // 3. Search the static charityList for a match
+            charityDetails = charityList.find(charity => charity.charity.toLowerCase() === matchedCharity.toLowerCase());
+          }
+
+          console.log("Matched Charity Name:", matchedCharity);
+          console.log("Found Charity Details:", description);
+
+          if (charityDetails) {
+            finalDonationLink = charityDetails.donationLink;
+            resultText.innerHTML = `
+              <strong>${charityDetails.charity}</strong><br />
+              <p>${charityDetails.description}</p>
+              <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.charity}</a>
+            `;
+          } else if (matchedCharity) {
             resultText.innerHTML = `
               <strong>${matchedCharity}</strong><br />
-              <p>${description || 'No description found.'}</p>
-              <a href="${donationLink || '#'}" target="_blank">Donate to ${matchedCharity}</a>
+              <p>Description not found in our local data.</p>
+              <a href="${donationLink || '#'}" target="_blank">Donate to ${matchedCharity} (Link from AI)</a>
             `;
-            } else {
-              console.error("Error extracting core data from AI response.");
-              resultText.innerHTML = '⚠️ Unable to reliably parse the AI response for key information.';
-            }
+            console.warn(`Charity "${matchedCharity}" found in AI but not fully in static list. Using AI link.`);
+            finalDonationLink = donationLink || '#';
+          } else {
+            console.error("Error: Could not extract charity name from AI response.");
+            resultText.innerHTML = '⚠️ Unable to identify the charity from the AI response.';
+          }
   
           // Display the static charity list under the result
           const staticCharityListHTML = charityList.map(charity => `
