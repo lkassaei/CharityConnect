@@ -1,4 +1,4 @@
-runtime: python312
+runtime: python39
 entrypoint: gunicorn -b :$PORT app:app
 
 handlers:
