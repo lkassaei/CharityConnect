@@ -1,0 +1,220 @@
+body {
+    background: linear-gradient(135deg, #a8dadc, #457b9d); /* Gradient background */
+    color: #fff;
+    font-family: 'Montserrat', sans-serif; /* Modern, geometric font */
+    padding: 80px 30px; /* More generous padding */
+    text-align: center;
+    line-height: 1.7;
+    overflow-x: hidden; /* Prevent horizontal scrollbar on subtle animations */
+  }
+  
+  h1 {
+    font-size: 3rem; /* Larger, more impactful heading */
+    color: #1d3557; /* Dark, contrasting heading color */
+    margin-bottom: 40px;
+    font-weight: 700; /* Bold heading */
+    letter-spacing: -0.05em; /* Slightly tighter letter spacing */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+  }
+  
+  fieldset {
+    margin: 50px auto;
+    max-width: 700px;
+    text-align: left;
+    padding: 40px;
+    border: none; /* Remove default border */
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+    backdrop-filter: blur(10px); /* Subtle background blur */
+  }
+  
+  fieldset legend {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1d3557;
+    color: #f1faee;
+    font-weight: 600;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  fieldset label {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    text-align: left;
+    color: #3a506b; /* Slightly different dark color */
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+  
+  fieldset input[type="radio"],
+  fieldset input[type="checkbox"] {
+    margin-right: 15px;
+    vertical-align: middle;
+    transform: scale(1.1); /* Slightly larger radio/checkbox */
+  }
+  
+  button {
+    background-color: #2e7d32; /* Dark green accent color */
+    color: #f1faee;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* More engaging transitions */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  pre {
+    white-space: pre-wrap;
+    text-align: left;
+    background-color: rgba(238, 238, 238, 0.8); /* Lighter pre background */
+    color: #283618;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Style for results box */
+  #results-container {
+    background: rgba(255, 255, 255, 0.9);
+    color: #3a506b;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 700px;
+    margin: 50px auto;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    backdrop-filter: blur(10px);
+  }
+  
+  #results-container h3 {
+    color: #1d3557;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
+  
+  #results-container strong {
+    font-size: 1.3rem;
+    color: #2e7d32; /* Dark green accent color for emphasis */
+    font-weight: 700;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  #results-container p {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+  
+  #results-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    border-bottom: 2px solid transparent; /* Underline on hover effect */
+    padding-bottom: 3px;
+  }
+  
+  #results-container a:hover {
+    color: #0056b3;
+    text-decoration: none;
+    border-bottom-color: #0056b3;
+  }
+  
+  /* Style for charity list container */
+  #charity-list-container {
+    background: rgba(255, 255, 255, 0.9);
+    color: #3a506b;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 50px auto;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+  }
+  
+  #charity-list-container h3 {
+    color: #1d3557;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  /* Add margin to separate sections */
+  #quiz-section,
+  #result-section,
+  #charity-list-section {
+    margin-bottom: 60px;
+  }
+  
+  /* For the charity list layout */
+  .charity-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Slightly wider min width */
+    gap: 30px;
+  }
+  
+  .charity-result {
+    margin-bottom: 0;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #f8f9fa; /* Lighter background for items */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .charity-result:hover {
+    transform: translateY(-5px); /* Subtle lift on hover */
+  }
+  
+  .charity-result strong {
+    font-size: 1.2rem;
+    color: #1d3557;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+  }
+  
+  .charity-result p {
+    margin-bottom: 15px;
+    line-height: 1.7;
+    font-size: 1rem;
+    color: #457b9d; /* Secondary color for description */
+  }
+  
+  .charity-result a {
+    color: #2e7d32; /* Dark green accent color for links */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 3px;
+  }
+  
+  .charity-result a:hover {
+    color: #1b5e20; /* Darker green on hover */
+    border-bottom-color: #1b5e20;
+  }

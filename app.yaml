@@ -1,0 +1,8 @@
+runtime: python312
+entrypoint: gunicorn -b :$PORT app:app
+
+handlers:
+- url: /static
+  static_dir: .
+- url: /.*
+  script: auto
