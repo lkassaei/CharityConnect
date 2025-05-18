@@ -20,13 +20,15 @@ body {
   fieldset {
     margin: 50px auto;
     max-width: 700px;
-    text-align: center;
     padding: 40px;
     border: none; /* Remove default border */
     border-radius: 16px;
     background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
     backdrop-filter: blur(10px); /* Subtle background blur */
+    display: flex; /* Enable flexbox for the fieldset */
+    flex-direction: column; /* Stack the legend and labels vertically */
+    align-items: center; /* Center items horizontally within the fieldset */
   }
   
   fieldset legend {
@@ -39,11 +41,10 @@ body {
     margin-bottom: 30px;
     font-size: 1.2rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
   }
   
   fieldset label {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
@@ -51,7 +52,7 @@ body {
     text-align: left;
     color: #3a506b; /* Slightly different dark color */
     font-weight: 500;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
   
   fieldset input[type="radio"],
