@@ -20,7 +20,7 @@ body {
   fieldset {
     margin: 50px auto;
     max-width: 700px;
-    text-align: left;
+    text-align: center;
     padding: 40px;
     border: none; /* Remove default border */
     border-radius: 16px;
@@ -39,10 +39,11 @@ body {
     margin-bottom: 30px;
     font-size: 1.2rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
   }
   
   fieldset label {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
@@ -57,7 +58,7 @@ body {
   fieldset input[type="checkbox"] {
     margin-right: 15px;
     vertical-align: middle;
-    transform: scale(1.3); /* Slightly larger radio/checkbox */
+    transform: scale(1.5); /* Slightly larger radio/checkbox */
   }
   
   button {
