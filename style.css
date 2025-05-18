@@ -46,7 +46,7 @@ body {
     width: 100%;
     margin-bottom: 20px;
     padding: 10px 0;
-    text-align: middle;
+    text-align: left;
     color: #3a506b; /* Slightly different dark color */
     font-weight: 500;
     font-size: 1.05rem;
@@ -55,7 +55,7 @@ body {
   fieldset input[type="radio"],
   fieldset input[type="checkbox"] {
     margin-right: 15px;
-    vertical-align: middle;
+    vertical-align: right;
     transform: scale(1.1); /* Slightly larger radio/checkbox */
   }
   
