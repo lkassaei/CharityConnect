@@ -45,11 +45,11 @@ body {
   
   fieldset label {
     display: flex;
-    align-items: center;
+    align-items: middle;
     width: 100%;
     margin-bottom: 20px;
     padding: 10px 0;
-    text-align: center;
+    text-align: middle;
     color: #3a506b; /* Slightly different dark color */
     font-weight: 500;
     font-size: 1.1rem;
