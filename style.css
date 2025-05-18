@@ -20,7 +20,7 @@ body {
   fieldset {
     margin: 50px auto;
     max-width: 700px;
-    text-align: left;
+    text-align: middle;
     padding: 40px;
     border: none; /* Remove default border */
     border-radius: 16px;
