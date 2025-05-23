@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(el => el.value);
 
     // ***************************************************************
-    // IMPORTANT: Move normalizeString function here to be accessible globally
+    // IMPORTANT: normalizeString function moved here to be accessible globally
     // ***************************************************************
     const normalizeString = (str) => {
         if (!str) return '';
@@ -69,24 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 let charityDetails = null;
                 let finalDonationLink = null;
 
-                // 1. Extract Charity Name: Look for "**Charity Name:** " and capture the text until a newline.
-                const charityNameMatch = aiResult.match(/\*\*Charity Name:\*\* (.+?)(?:[\r\n]|$)/i);
+                // --- UPDATED REGEXES FOR LATEST AI FORMAT ---
+
+                // 1. Extract Charity Name: Look for a bolded name immediately following a newline
+                // and before "Description:". This matches "**Mahak Society to Support Children with Cancer**"
+                const charityNameMatch = aiResult.match(/[\r\n]\s*\*\*(.*?)\*\*\s*[\r\n]\s*Description:/i);
                 if (charityNameMatch && charityNameMatch[1]) {
                     matchedCharity = charityNameMatch[1].trim();
                 }
 
-                // 2. Extract Description: Look for "**Description:** " and capture content until next section.
-                const aiDescMatch = aiResult.match(/\*\*Description:\*\*([\s\S]+?)(?=[\r\n]\*\*Link:|\n{2,}|\s*$)/i);
+                // 2. Extract Description: Look for "Description:" (now not bolded) and capture content
+                const aiDescMatch = aiResult.match(/Description:([\s\S]+?)(?=[\r\n]Link:|\n{2,}|\s*$)/i);
                 if (aiDescMatch && aiDescMatch[1]) {
                     description = aiDescMatch[1].trim();
                 }
 
-                // 3. Extract Donation Link: Look for "**Link:** " and capture the URL.
-                // This covers the simple URL format.
-                const linkUrlMatch = aiResult.match(/\*\*Link:\*\* (https?:\/\/[^\s]+)/i);
+                // 3. Extract Donation Link: Look for "Link:" (now not bolded) and capture the URL
+                const linkUrlMatch = aiResult.match(/Link:\s*(https?:\/\/[^\s]+)/i);
                 if (linkUrlMatch && linkUrlMatch[1]) {
                     donationLink = linkUrlMatch[1];
                 }
+
+                // --- END UPDATED REGEXES ---
 
                 console.log("AI Extracted Link:", donationLink);
                 console.log("DEBUG: matchedCharity from AI:", matchedCharity);
@@ -97,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (matchedCharity) {
-                    // normalizeString is now defined outside this block
                     const normalizedMatchedCharity = normalizeString(matchedCharity);
                     console.log("DEBUG: Normalized AI Matched Charity:", normalizedMatchedCharity, `(Length: ${normalizedMatchedCharity.length})`);
 
@@ -146,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let charitiesToDisplayAsOthers = backendCharities;
                 if (charityDetails) {
                     // Filter out the top matched charity from the "other charities" list
-                    // normalizeString is now accessible here
                     charitiesToDisplayAsOthers = backendCharities.filter(
                         charity => charity.name && normalizeString(charity.name) !== normalizeString(charityDetails.name)
                     );
