@@ -85,7 +85,7 @@ User preferences:
 {prefs}
 
 From the charity list below, choose the best match.
-Return charity name, description, and link.
+Return charity name, description, and link in the same format each time.
 
 {CHARITIES_MARKDOWN_FOR_AI}
 """.strip()
