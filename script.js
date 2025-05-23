@@ -61,6 +61,7 @@
             matchedCharity = charityMatch[2].trim();
           }
 
+
           // 2. Extract Donation Link from AI (as a fallback)
           const linkMatch = aiResult.match(/\*\*\s*Link:\*\*\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
           if (linkMatch && linkMatch[1]) {
@@ -72,14 +73,17 @@
             }
           }
           console.log("AI Extracted Link:", donationLink);
-          
+
           if (matchedCharity) {
-            // 3. Search the static charityList for a match
-            charityDetails = backendCharities.find(charity => charity.name.toLowerCase() === matchedCharity.toLowerCase());
+            // *** HIGHLIGHTED CHANGE START ***
+            // 3. Search the backendCharities (which replaces your old charityList) for a match
+            //    Access 'charity.charity' because that's the key name in your JSON objects.
+            charityDetails = backendCharities.find(charity => charity.charity.toLowerCase() === matchedCharity.toLowerCase());
+            // *** HIGHLIGHTED CHANGE END ***
           }
 
           console.log("Matched Charity Name:", matchedCharity);
-          console.log("Found Charity Details:", description);
+          console.log("Found Charity Details:", charityDetails);
 
           if (charityDetails) {
             description = charityDetails.description;
@@ -105,7 +109,7 @@
           let charitiesToDisplayAsOthers = backendCharities;
           if (charityDetails) { // If a specific charity was found and displayed as the top match
               charitiesToDisplayAsOthers = backendCharities.filter(
-                  charity => charity.name.toLowerCase() !== charityDetails.name.toLowerCase()
+                  charity => charity.name.toLowerCase() !== charityDetails.charity.toLowerCase()
               );
           }
   
