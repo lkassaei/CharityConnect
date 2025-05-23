@@ -48,21 +48,32 @@ document.addEventListener('DOMContentLoaded', () => {
           // Check if the response has the expected structure
           if (data && data.choices && data.choices.length > 0) {
             const aiResult = data.choices[0].message.content;
-            console.log("AI Result:", aiResult); // Log the raw result from the AI
+
+            // --- START NEW DEBUGGING LOGS FOR RAW AI RESULT STRING ---
+            console.log("AI Result (RAW string):", aiResult);
+            console.log("AI Result Length:", aiResult.length);
+            console.log("AI Result (first 100 chars):", aiResult.substring(0, 100));
+            console.log("AI Result (last 100 chars):", aiResult.substring(aiResult.length - 100));
+            // This next log will show all characters, including invisible ones.
+            // It will look like a single line of text with \n and \r.
+            console.log("AI Result (JSON stringified to reveal hidden chars):", JSON.stringify(aiResult));
+            // --- END NEW DEBUGGING LOGS ---
 
             let matchedCharity = null;
             let donationLink = null;
             let charityDetails = null;
             let finalDonationLink = null;
 
-            // 1. Extract Charity Name (UPDATED REGEX for **Charity Name (XYZ)** format after newline)
-            // This regex captures the bolded text that appears before **Description:
-            const charityNameMatch = aiResult.match(/\n\s*\*\*(.*?)\*\*\n\s*\*\*Description:/i);
+            // 1. Extract Charity Name (MOST ROBUST REGEX for **Charity Name (XYZ)** format)
+            // Uses [\r\n] to match either Windows (\r\n) or Unix (\n) newlines
+            // Matches **NAME** immediately followed by **Description: on a subsequent line
+            const charityNameMatch = aiResult.match(/[\r\n]\s*\*\*(.*?)\*\*\s*[\r\n]\s*\*\*Description:/i);
             if (charityNameMatch && charityNameMatch[1]) {
               matchedCharity = charityNameMatch[1].trim();
             }
 
-            // 2. Extract Donation Link (UPDATED REGEX for **Link:** URL format)
+            // 2. Extract Donation Link (MOST ROBUST REGEX for **Link:** URL format)
+            // Matches **Link:** followed by a space and then the URL
             const linkMatch = aiResult.match(/\*\*Link:\*\* (https?:\/\/[^\s]+)/i);
             if (linkMatch && linkMatch[1]) {
               donationLink = linkMatch[1];
@@ -78,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (matchedCharity) {
               const normalizeString = (str) => {
                   if (!str) return '';
-                  // Remove text in parentheses (like WFP), then non-alphanumeric, then lowercase
+                  // Remove text in parentheses (like WFP), then all non-alphanumeric, then lowercase
+                  // This is crucial for matching "World Food Programme (WFP)" to "World Food Programme"
                   return str.replace(/\([^)]*\)/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
               };
 
@@ -110,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
               `;
             } else if (matchedCharity) {
               let aiExtractedDescription = null;
-              // This regex for description should still be fine
+              // This regex for description should still be fine, matching **Description:** then content
               const aiDescMatch = aiResult.match(/\*\*Description:\*\*([\s\S]*?)(?=\*\*Link:|\*\*Impact:|\n{2,}|$)/i);
               if (aiDescMatch && aiDescMatch[1]) {
                   aiExtractedDescription = aiDescMatch[1].trim();
