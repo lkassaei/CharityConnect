@@ -152,56 +152,40 @@ body {
   /* NEW: Style for the "Other Charities" Box */
 #other-charities-list-box { /* Renamed from charity-list-container to avoid confusion */
   background: rgba(255, 255, 255, 0.9);
-  color: #3a506b;
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 900px; /* Wider for the grid layout */
-  margin: 30px auto 50px auto; /* Separate from the top match box */
-  /* display: none; Controlled by JS */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
-  text-align: left;
-}
-
-#other-charities-list-box h3 {
-  color: #1d3557;
-  font-size: 1.8rem;
-  margin-top: 0;
-  margin-bottom: 30px;
-  font-weight: 600;
-  text-align: center; /* Center the heading for the list */
-}
-
-#charity-list-grid { /* Target the ID directly */
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
-  gap: var(--spacing-lg);
-
-  /* Inherit/reapply other styles it needs as a container */
-  background: rgba(255, 255, 255, 0.9);
   color: var(--color-text-dark);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-xl);
-  max-width: 900px;
+  max-width: 900px; /* Keep this wider max-width for the grid */
   margin: var(--spacing-lg) auto var(--spacing-xxl) auto;
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(10px);
-  text-align: left; /* Keep left alignment for text within the box */
+  text-align: left; /* Default alignment for content within the box */
 
-  /* Media Query for Responsiveness */
+  /* NEW: Add grid properties directly to this ID */
+  display: grid; /* Make this element a grid container */
+  grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+  gap: var(--spacing-lg); /* Space between the grid items (the charity-result divs) */
+
+  /* IMPORTANT: Add padding-top/bottom/left/right as needed if gap pushes things to edges,
+     or adjust padding on the box itself.
+     If the H3 is dynamically added, you'll need a margin-bottom on the H3.
+  */
+
+  /* Media Query for Responsiveness: */
   @media (max-width: 768px) {
       grid-template-columns: 1fr; /* Force 1 column on smaller screens */
   }
 }
 
-/* IMPORTANT: If you want the H3 inside it to be centered, keep its specific rule: */
-#charity-list-grid h3 {
+#other-charities-list-box h3 {
   color: var(--color-primary-dark);
   font-size: 1.8rem;
   margin-top: 0;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl); /* Space below the heading */
   font-weight: 600;
-  text-align: center; /* This rule remains for the H3 within the grid container */
+  text-align: center; /* Center the heading within the box */
+  /* If you want the H3 to span both columns, add: */
+  grid-column: 1 / -1; /* Make the H3 span all columns of the grid */
 }
 
 /* Styles for individual charity results (these will apply to both boxes) */
