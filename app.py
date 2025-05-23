@@ -1,4 +1,5 @@
 
+
 # app.py ----------------------------------------------------------
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS          # still handy if you later split front/back
@@ -85,7 +86,7 @@ User preferences:
 {prefs}
 
 From the charity list below, choose the best match.
-Return charity name, description, and link in the same format each time.
+Return charity name, description, and link.
 
 {CHARITIES_MARKDOWN_FOR_AI}
 """.strip()
