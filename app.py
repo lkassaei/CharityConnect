@@ -4,6 +4,7 @@ from flask_cors import CORS          # still handy if you later split front/back
 from dotenv import load_dotenv
 import os, requests
 import re
+import json # Import the json module
 
 # ---------- env --------------------------------------------------
 load_dotenv()
@@ -34,91 +35,20 @@ def serve_quiz():
     return send_from_directory("./templates/", "index.html")
 
 # ---------- API route -------------------------------------------
-CHARITIES = "# List of Charities\n\n" \
-    + "### Embrace the Middle East\n" \
-    + "- **Type**: Humanitarian Aid, Education, Healthcare\n" \
-    + "- **Impact**: This charity works to support marginalized and vulnerable communities across the Middle East, providing humanitarian aid, education, and healthcare. Their projects focus on long-term solutions to poverty and injustice, empowering local communities through sustainable programs. With an ecumenical Christian foundation, they partner with local organizations to promote dignity and hope.\n" \
-    + "[Donation Page](https://embraceme.org/donate)\n\n" \
-    + "### Alliance for Middle East Peace (ALLMEP)\n" \
-    + "- **Type**: Peacebuilding\n" \
-    + "- **Impact**: ALLMEP is a coalition of over 160 organizations dedicated to peacebuilding between Israelis and Palestinians. By supporting grassroots initiatives, they promote dialogue, cooperation, and mutual understanding to build a more peaceful future. They also advocate for international support to expand their conflict-resolution efforts.\n" \
-    + "[Donation Page](https://www.allmep.org/donate/)\n\n" \
-    + "### American Near East Refugee Aid (Anera)\n" \
-    + "- **Type**: Humanitarian Aid, Education, Health\n" \
-    + "- **Impact**: Anera delivers vital programs to alleviate poverty and suffering in the Middle East, focusing on education, health, and economic development. They provide medical aid, vocational training, and emergency relief to communities affected by conflict. Their initiatives create sustainable opportunities, particularly for refugees and vulnerable populations.\n" \
-    + "[Donation Page](https://www.anera.org/donate/)\n\n" \
-    + "### Disasters Emergency Committee (DEC) – Middle East Humanitarian Appeal\n" \
-    + "- **Type**: Emergency Relief\n" \
-    + "- **Impact**: DEC coordinates emergency relief efforts for humanitarian crises in Gaza, Lebanon, and the West Bank. Their aid includes food, clean water, and medical assistance to communities impacted by conflict and displacement. They bring together multiple charities to ensure rapid and effective disaster response.\n" \
-    + "[Donation Page](https://www.dec.org.uk/appeal/middle-east-humanitarian-appeal)\n\n" \
-    + "### Bill & Melinda Gates Foundation – Middle East Initiatives\n" \
-    + "- **Type**: Health, Poverty Alleviation, Agricultural Development\n" \
-    + "- **Impact**: This foundation partners with organizations in the Middle East to address critical issues such as healthcare, poverty, and agricultural development. Their initiatives focus on reducing preventable diseases, improving education, and fostering economic growth. By funding innovative solutions, they aim to create lasting change in struggling communities.\n" \
-    + "[Donation Page](https://www.gatesfoundation.org/)\n\n" \
-    + "### World Food Programme (WFP)\n" \
-    + "- **Type**: Food Assistance\n" \
-    + "- **Impact**: WFP provides food assistance to vulnerable populations across the Middle East, tackling hunger and malnutrition. Their programs deliver emergency food supplies while also supporting sustainable solutions for food security. Through partnerships with local governments and organizations, they help communities build resilience against food crises.\n" \
-    + "[Donation Page](https://www.wfp.org/donate)\n\n" \
-    + "### UNICEF\n" \
-    + "- **Type**: Child Protection, Education, Health\n" \
-    + "- **Impact**: UNICEF works to protect children across the Middle East by providing education, healthcare, and humanitarian aid. Their programs focus on immunizations, clean water, nutrition, and emergency relief for children affected by war and poverty. They advocate for children's rights and ensure access to essential services in crisis-affected regions.\n" \
-    + "[Donation Page](https://www.unicef.org/)\n\n" \
-    + "### CARE\n" \
-    + "- **Type**: Humanitarian Aid\n" \
-    + "- **Impact**: CARE delivers both immediate relief and long-term development programs in the Middle East, focusing on food security, education, and women's empowerment. Their work helps families rebuild their lives after conflict and displacement. They also provide economic opportunities for women to support self-sufficiency and social stability.\n" \
-    + "[Donation Page](https://www.care.org/)\n\n" \
-    + "### Islamic Relief USA\n" \
-    + "- **Type**: Humanitarian Aid (Food aid, clean water, healthcare, education, livelihood support)\n" \
-    + "- **Impact**: Islamic Relief USA provides comprehensive humanitarian aid across the Middle East, including emergency relief, healthcare, clean water, and education. Their projects focus on both immediate assistance and long-term development, helping communities recover from crises. They also support livelihood programs to foster self-reliance.\n" \
-    + "[Donation Page](https://irusa.org/middle-east/)\n\n" \
-    + "### Middle East Children's Alliance (MECA)\n" \
-    + "- **Type**: Medical and Educational Support\n" \
-    + "- **Impact**: MECA delivers medical aid and supports community projects that improve the lives of Palestinian children and refugees from Syria. Their work includes providing educational resources, clean water initiatives, and trauma relief programs. They focus on empowering children and families to rebuild their futures.\n" \
-    + "[Donation Page](https://www.mecaforpeace.org/)\n\n" \
-    + "### Palestine Children's Relief Fund (PCRF)\n" \
-    + "- **Type**: Medical Aid\n" \
-    + "- **Impact**: PCRF provides life-saving medical care to children in the Middle East, including those in the West Bank and Gaza. They arrange free surgeries and medical treatments for children in need, regardless of nationality or religion. Their long-term projects include building pediatric cancer centers to improve healthcare access.\n" \
-    + "[Donation Page](https://www.pcrf.net/)\n\n" \
-    + "### United Nations Relief and Works Agency for Palestine Refugees (UNRWA)\n" \
-    + "- **Type**: Humanitarian Aid (Food assistance, education, healthcare)\n" \
-    + "- **Impact**: UNRWA provides essential services such as food, education, and healthcare to Palestinian refugees across the Middle East. They support millions of people in Gaza, the West Bank, Lebanon, Syria, and Jordan. Their work ensures that displaced communities have access to basic human rights and opportunities for a better future.\n" \
-    + "[Donation Page](https://donate.unrwa.org/int/en/general)\n\n" \
-    + "### Project HOPE\n" \
-    + "- **Type**: Medical Aid\n" \
-    + "- **Impact**: Project HOPE strengthens health systems and provides emergency medical aid in the Middle East and North Africa. Their work includes training healthcare workers, delivering life-saving medicines, and responding to humanitarian crises. They focus on long-term health solutions to build stronger communities.\n" \
-    + "[Donation Page](https://www.projecthope.org/region/middle-east-north-africa/)\n\n" \
-    + "### Médecins Sans Frontières (Doctors Without Borders)\n" \
-    + "- **Type**: Medical Aid\n" \
-    + "- **Impact**: Doctors Without Borders provides emergency medical care in conflict zones across the Middle East, including Syria, Yemen, and Iraq. Their teams offer surgical care, maternal health services, and treatment for malnutrition and disease outbreaks. They operate independently, ensuring aid reaches those most in need.\n" \
-    + "[Donation Page](https://www.msf.org/donate)\n\n" \
-    + "### International Rescue Committee (IRC)\n" \
-    + "- **Type**: Humanitarian Aid\n" \
-    + "- **Impact**: IRC provides life-saving healthcare, child protection, and emergency relief to people affected by war and displacement in the Middle East. Their programs help rebuild communities by offering job training, education, and economic support. They focus on both immediate humanitarian assistance and long-term stability.\n" \
-    + "[Donation Page](https://www.rescue.org/donate)\n\n" \
-    + "### Save the Children\n" \
-    + "- **Type**: Child Protection, Education, and Health\n" \
-    + "- **Impact**: Save the Children delivers education, healthcare, and emergency relief to children affected by conflict in the Middle East. Their programs focus on ensuring access to learning, nutrition, and psychological support for children in crisis. They advocate for children's rights and work to create a brighter future for vulnerable youth.\n" \
-    + "[Donation Page](https://www.savethechildren.org/us/what-we-do/where-we-work/greater-middle-east-eurasia)\n\n" \
-    + "### Action Against Hunger\n" \
-    + "- **Type**: Food Security and Nutrition\n" \
-    + "- **Impact**: Action Against Hunger combats food insecurity and malnutrition in the Middle East by providing emergency food aid and sustainable farming solutions. Their projects include distributing food parcels and supporting communities in developing long-term food production. They focus on addressing the root causes of hunger and building resilience.\n" \
-    + "[Donation Page](https://www.actionagainsthunger.org/donate)\n\n" \
-    + "### Mahak Society to Support Children with Cancer\n" \
-    + "- **Type**: Pediatric Cancer Support\n" \
-    + "- **Impact**: Mahak is one of the most respected nonprofit organizations in Iran, dedicated to supporting children with cancer and their families. They provide high-quality treatment, emotional support, and financial assistance. Their state-of-the-art hospital in Tehran is internationally accredited and offers comprehensive care regardless of financial status.\n" \
-    + "[Donation Page](https://www.mahak-charity.org/main/index.php/en/how-to-help/donate-online)\n\n" \
-    + "### Imam Ali's Popular Students Relief Society\n" \
-    + "- **Type**: Poverty Alleviation and Social Support\n" \
-    + "- **Impact**: A grassroots, student-led charity organization in Iran that helps children and families living in poverty. Their initiatives range from education and healthcare to emergency housing and psychological support. The group is known for its community-based development model and long-term commitment to vulnerable populations.\n" \
-    + "[Donation Page](https://www.sosapoverty.org/en/)\n\n" \
-    + "### Persian Wildlife Foundation\n" \
-    + "- **Type**: Environmental Conservation\n" \
-    + "- **Impact**: The Persian Wildlife Foundation works to preserve Iran’s natural heritage through research, education, and conservation projects. They focus on endangered species, environmental education, and supporting local communities in sustainable development. Their efforts help protect Iran's unique biodiversity and natural ecosystems.\n" \
-    + "[Donation Page](https://www.persianwildlife.org/)\n\n" \
-    + "### Children of Persia\n" \
-    + "- **Type**: Child Welfare and Education\n" \
-    + "- **Impact**: Children of Persia is a U.S.-based nonprofit that supports health, education, and welfare projects for children in Iran. They fund surgeries, distribute school supplies, and provide financial assistance to families in need. Their goal is to offer opportunities for children to live healthier, more dignified lives.\n" \
-    + "[Donation Page](https://www.childrenofpersia.org/donate/)"
+# --- Load Charities from JSON file ---
+def load_charities():
+    try:
+        # Adjust the path if your JSON file is in a different directory
+        with open('charities.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("Error: charities.json not found. Make sure the file is in the correct directory.")
+        return []
+    except json.JSONDecodeError:
+        print("Error: Could not decode charities.json. Check for JSON syntax errors.")
+        return []
+
+CHARITIES = load_charities()
 
 @app.post("/api/charity-match")
 def charity_match():
