@@ -57,9 +57,15 @@
             let finalDonationLink = null; // To hold the final link for HTML
     
             // 1. Extract Charity Name (look for the first bold text)
-            const charityMatch = aiResult.match(/I recommend \*\*(.*?)\*\*:?/i);
-            if (charityMatch && charityMatch[2]) {
-              matchedCharity = charityMatch[2].trim();
+            const charityMatch = aiResult.match(/- \*\*Name\*\*:\s*(.*?)\n/i);
+            if (charityMatch && charityMatch[1]) {
+              matchedCharity = charityMatch[1].trim();
+            } else {
+              // Fallback to the old regex if the new format isn't found (AI might vary)
+              const fallbackCharityMatch = aiResult.match(/I recommend \*\*(.*?)\*\*:?/i);
+              if (fallbackCharityMatch && fallbackCharityMatch[1]) {
+                matchedCharity = fallbackCharityMatch[1].trim();
+              }
             }
 
             // 2. Extract Donation Link from AI (as a fallback)
