@@ -16,6 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
         Array.from(document.querySelectorAll(`input[name="${n}"]:checked`))
             .map(el => el.value);
 
+    // ***************************************************************
+    // IMPORTANT: Move normalizeString function here to be accessible globally
+    // ***************************************************************
+    const normalizeString = (str) => {
+        if (!str) return '';
+        // Remove text in parentheses (like WFP), then all non-alphanumeric, then lowercase
+        return str.replace(/\([^)]*\)/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    };
+    // ***************************************************************
+
     submitBtn.addEventListener('click', () => {
         const answers = {
             cause: getChecks('cause'),
@@ -59,8 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let charityDetails = null;
                 let finalDonationLink = null;
 
-                // --- NEW REGEXES FOR LATEST AI FORMAT ---
-
                 // 1. Extract Charity Name: Look for "**Charity Name:** " and capture the text until a newline.
                 const charityNameMatch = aiResult.match(/\*\*Charity Name:\*\* (.+?)(?:[\r\n]|$)/i);
                 if (charityNameMatch && charityNameMatch[1]) {
@@ -80,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     donationLink = linkUrlMatch[1];
                 }
 
-                // --- END NEW REGEXES ---
-
                 console.log("AI Extracted Link:", donationLink);
                 console.log("DEBUG: matchedCharity from AI:", matchedCharity);
                 console.log("DEBUG: extractedDescription from AI:", description); // Log extracted description
@@ -91,12 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (matchedCharity) {
-                    const normalizeString = (str) => {
-                        if (!str) return '';
-                        // Remove text in parentheses (like WFP), then all non-alphanumeric, then lowercase
-                        return str.replace(/\([^)]*\)/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-                    };
-
+                    // normalizeString is now defined outside this block
                     const normalizedMatchedCharity = normalizeString(matchedCharity);
                     console.log("DEBUG: Normalized AI Matched Charity:", normalizedMatchedCharity, `(Length: ${normalizedMatchedCharity.length})`);
 
@@ -145,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let charitiesToDisplayAsOthers = backendCharities;
                 if (charityDetails) {
                     // Filter out the top matched charity from the "other charities" list
+                    // normalizeString is now accessible here
                     charitiesToDisplayAsOthers = backendCharities.filter(
                         charity => charity.name && normalizeString(charity.name) !== normalizeString(charityDetails.name)
                     );
