@@ -78,7 +78,7 @@
             // *** HIGHLIGHTED CHANGE START ***
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
-            charityDetails = backendCharities.find(charity => charity.charity.toLowerCase() === matchedCharity.toLowerCase());
+            charityDetails = backendCharities.find(charity => charity.charity && charity.charity.toLowerCase() === matchedCharity.toLowerCase());
             // *** HIGHLIGHTED CHANGE END ***
           }
 
