@@ -19,11 +19,11 @@
   
     submitBtn.addEventListener('click', () => {
       const answers = {
-        cause:   getRadio('cause'),
+        cause:   getChecks('cause'),
         groups:  getChecks('groups'),
-        region:  getRadio('region'),
-        faith:   getRadio('faith'),
-        support: getRadio('support')
+        region:  getChecks('region'),
+        faith:   getChecks('faith'),
+        support: getChecks('support')
       };
   
       // Show results container
