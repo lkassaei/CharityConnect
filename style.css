@@ -175,8 +175,26 @@ body {
 /* For the charity list layout within the new box */
 .charity-list-grid { /* This class will wrap the individual charity-result divs */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px;
+  /* REPLACE THIS LINE: */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Your current setting for flexibility */
+
+  /* WITH ONE OF THESE OPTIONS to force 2 in a row: */
+  /* Option 1: Exactly 2 columns of equal width, regardless of individual item min-width */
+  /* grid-template-columns: repeat(2, 1fr); */
+
+  /* Option 2: Attempt to fit items with a minimum width of 350px, and if space allows, create two columns.
+     This is often preferred as it's more responsive than a fixed 'repeat(2, 1fr)'.
+     If the screen is too small for two 350px items, it will fall back to one.
+     (This is very similar to what you already have, but if you want to ensure it works well with 2 in a row) */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Keep this, but ensure your max-width on the container is sufficient */
+
+
+  gap: 30px; /* Space between the grid items */
+
+  /* IMPORTANT: Add a media query if you want it to revert to 1 column on smaller screens */
+  @media (max-width: 768px) { /* Example breakpoint */
+      grid-template-columns: 1fr; /* On smaller screens, go back to 1 column */
+  }
 }
 
 /* Styles for individual charity results (these will apply to both boxes) */
