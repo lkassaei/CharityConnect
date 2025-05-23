@@ -161,6 +161,7 @@
               ${staticCharityListHTML}
             `;
             
+            resultText.innerHTML = resultText.innerHTML;
             resultsBox.style.display = 'block'; // Ensure the results box is visible
             //otherCharitiesListBox.innerHTML = otherCharitiesContent;
             //otherCharitiesListBox.style.display = 'block';
