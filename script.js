@@ -1,8 +1,4 @@
-
-
-
-  
-  // Wait until the DOM is fully loaded
+// Wait until the DOM is fully loaded
   document.addEventListener('DOMContentLoaded', () => {
     const submitBtn  = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
