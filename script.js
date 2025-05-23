@@ -7,9 +7,6 @@
     const resultsBox = document.getElementById('results-container');
     const resultText  = document.getElementById('result-text');
     const otherCharitiesListBox = document.getElementById('other-charities-list-box'); // The new box for other charities
-
-    resultsBox.style.display = 'none';
-    otherCharitiesListBox.style.display = 'none';
   
     const getRadio = n =>
       (document.querySelector(`input[name="${n}"]:checked`) || {}).value || null;
@@ -17,6 +14,9 @@
     const getChecks = n =>
       Array.from(document.querySelectorAll(`input[name="${n}"]:checked`))
            .map(el => el.value);
+
+    resultsBox.style.display = 'none';
+    otherCharitiesListBox.style.display = 'none';
   
     submitBtn.addEventListener('click', () => {
       const answers = {
