@@ -162,8 +162,8 @@
             `;
             
             resultsBox.style.display = 'block'; // Ensure the results box is visible
-            otherCharitiesListBox.innerHTML = otherCharitiesContent;
-            otherCharitiesListBox.style.display = 'block';
+            //otherCharitiesListBox.innerHTML = otherCharitiesContent;
+            //otherCharitiesListBox.style.display = 'block';
           }
         })
         .catch(err => {
