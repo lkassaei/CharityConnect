@@ -48,7 +48,21 @@ def load_charities():
         print("Error: Could not decode charities.json. Check for JSON syntax errors.")
         return []
 
-CHARITIES = load_charities()
+CHARITIES_DATA = load_charities()
+
+def format_charities_for_ai(charities_list):
+    markdown_output = "# List of Charities\n\n"
+    for charity in charities_list:
+        markdown_output += f"### {charity['charity']}\n"
+        # Assuming 'type' is a list of strings now in your JSON
+        type_str = ", ".join(charity.get('type', []))
+        markdown_output += f"- **Type**: {type_str}\n"
+        markdown_output += f"- **Impact**: {charity['description']}\n"
+        markdown_output += f"[Donation Page]({charity['donationLink']})\n\n"
+    return markdown_output
+
+# Generate the Markdown string once at startup for the AI prompt
+CHARITIES_MARKDOWN_FOR_AI = format_charities_for_ai(CHARITIES_DATA)
 
 @app.post("/api/charity-match")
 def charity_match():
@@ -72,7 +86,7 @@ User preferences:
 From the charity list below, choose the best match.
 Return charity name, description, and link.
 
-{CHARITIES}
+{CHARITIES_MARKDOWN_FOR_AI}
 """.strip()
 
     payload = {
