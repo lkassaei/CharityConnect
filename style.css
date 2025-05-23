@@ -26,8 +26,8 @@ body {
     background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
     backdrop-filter: blur(10px); /* Subtle background blur */
-    display: flex; /* Enable flexbox for the fieldset */
-    flex-direction: column; /* Stack the legend and labels vertically */
+    font-size: medium;
+    text-align: center;
   }
   
   fieldset legend {
@@ -38,8 +38,7 @@ body {
     color: #f1faee;
     font-weight: 600;
     margin-bottom: 30px;
-    font-size: 1.5rem;
-    text-align: center;
+    font-size: 1.2rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
   
