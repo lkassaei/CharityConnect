@@ -53,12 +53,12 @@ CHARITIES_DATA = load_charities()
 def format_charities_for_ai(charities_list):
     markdown_output = "# List of Charities\n\n"
     for charity in charities_list:
-        markdown_output += f"### {charity['charity']}\n"
-        # Assuming 'type' is a list of strings now in your JSON
+        # Use .get() with a default empty string/list for safety, though these keys should always exist
+        markdown_output += f"### {charity.get('charity', 'Unknown Charity')}\n"
         type_str = ", ".join(charity.get('type', []))
         markdown_output += f"- **Type**: {type_str}\n"
-        markdown_output += f"- **Impact**: {charity['description']}\n"
-        markdown_output += f"[Donation Page]({charity['donationLink']})\n\n"
+        markdown_output += f"- **Impact**: {charity.get('description', 'No description available')}\n"
+        markdown_output += f"[Donation Page]({charity.get('donationLink', '#')})\n\n"
     return markdown_output
 
 # Generate the Markdown string once at startup for the AI prompt
@@ -97,23 +97,44 @@ Return charity name, description, and link.
         ]
     }
 
-    resp = requests.post(API_URL, headers=HEADERS, json=payload, timeout=60)
-    chat = resp.json()
-    ai_result = chat["choices"][0]["message"]["content"]
+    try:
+        resp = requests.post(API_URL, headers=HEADERS, json=payload, timeout=60)
+        resp.raise_for_status() # Raises HTTPError for bad responses (4xx or 5xx)
+        chat = resp.json()
+        ai_result = chat["choices"][0]["message"]["content"]
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return jsonify({"error": "Failed to get response from AI API"}), 500
+    except (KeyError, IndexError) as e:
+        print(f"Error parsing AI response: {e}. Full response: {json.dumps(chat, indent=2)}")
+        return jsonify({"error": "Unexpected AI response format from Together AI"}), 500
 
     match = re.search(r"\*\*(.*?)\*\*", ai_result)
     matched_name = match.group(1) if match else None
 
-    all_charities = []
-    for block in CHARITIES_DATA:
-        lines = block.strip().split("\n")
-        name = lines[0].strip()
-        link_line = next((line for line in lines if line.startswith("[Donation Page](")), None)
-        if name and link_line:
-            link = re.search(r"\((.*?)\)", link_line).group(1)
-            all_charities.append({"name": name, "link": link})
+    # --- THIS ENTIRE BLOCK IS THE CORE CORRECTION ---
+    # We use CHARITIES_DATA directly, no string parsing needed.
+    other_charities_for_frontend = []
+    # Create a list of all charities with just 'name', 'description', 'link' keys
+    # This acts as your 'all_charities' list from the old code
+    all_formatted_charities = [
+        {
+            "name": item.get("charity"),
+            "description": item.get("description"),
+            "link": item.get("donationLink")
+        }
+        for item in CHARITIES_DATA
+    ]
 
-    other_charities = [c for c in all_charities if c["name"] != matched_name]
+    if matched_name:
+        # Filter out the matched charity from the formatted list
+        other_charities_for_frontend = [
+            c for c in all_formatted_charities if c.get("name") != matched_name
+        ]
+    else:
+        # If AI didn't return a specific match, return all charities.
+        # This will include the one that *might* have been matched if AI had picked one.
+        other_charities_for_frontend = all_formatted_charities
 
     return jsonify({
         "choices": chat["choices"],
