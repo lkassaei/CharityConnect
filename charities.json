@@ -3,7 +3,7 @@
     "charity": "Embrace the Middle East",
     "description": "This charity works to support marginalized and vulnerable communities across the Middle East, providing humanitarian aid, education, and healthcare. Their projects focus on long-term solutions to poverty and injustice, empowering local communities through sustainable programs. With an ecumenical Christian foundation, they partner with local organizations to promote dignity and hope.",
     "donationLink": "https://embraceme.org/donate",
-    "type": ["Humanitarian Aid", "Education", "Healthcare"] // Adding the 'Type' from your Python string, but as an array for easier filtering later
+    "type": ["Humanitarian Aid", "Education", "Healthcare"] 
   },
   {
     "charity": "Alliance for Middle East Peace (ALLMEP)",
