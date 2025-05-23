@@ -156,7 +156,11 @@
               </div>
             `).join('');
 
-            otherCharitiesContent += `<div class="charity-list-grid">${staticCharityListHTML}</div>`;
+            // Append the static charity list below the result
+            otherCharitiesContent += `
+              <h3>Other Charities You Can Support:</h3>
+              ${staticCharityListHTML}
+            `;
             
             resultsBox.style.display = 'block'; // Ensure the results box is visible
             otherCharitiesListBox.innerHTML = otherCharitiesContent;
