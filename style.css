@@ -48,6 +48,7 @@ body {
     padding: 10px 0;
     line-height: 4.0;
     color: #3a506b; /* Slightly different dark color */
+    letter-spacing: 1px;
     font-weight: 500;
     font-size: 1.5rem;
     text-align: center;
