@@ -46,6 +46,7 @@
           console.log("API Response:", data); // Log the full API response for debugging
 
           const backendCharities = data.other_charities || [];
+          let otherCharitiesContent = '';
   
           // Check if the response has the expected structure
           if (data && data.choices && data.choices.length > 0) {
@@ -156,13 +157,13 @@
             `).join('');
     
             // Append the static charity list below the result
-            otherCharitiesListBox += `
+            otherCharitiesContent += `
               <h3>Other Charities You Can Support:</h3>
               ${staticCharityListHTML}
             `;
             
             resultsBox.style.display = 'block'; // Ensure the results box is visible
-            //otherCharitiesListBox.innerHTML = otherCharitiesListBox;
+            //otherCharitiesListBox.innerHTML = otherCharitiesContent;
             //otherCharitiesListBox.style.display = 'block';
           }
         })
