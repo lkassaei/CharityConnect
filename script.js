@@ -80,6 +80,17 @@
           }
 
           if (matchedCharity) {
+            // Add a normalizeString helper here for robust comparison
+            const normalizeString = (str) => {
+                if (!str) return ''; // Handle null/undefined strings
+                // Remove all non-alphanumeric characters (keep letters and numbers)
+                // and convert to lowercase for robust matching.
+                return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+            };
+
+            const normalizedMatchedCharity = normalizeString(matchedCharity);
+            console.log("DEBUG: Normalized AI Matched Charity:", normalizedMatchedCharity);
+            
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
             charityDetails = backendCharities.find(charity => charity.name && charity.name.toLowerCase() === matchedCharity.toLowerCase());
