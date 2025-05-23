@@ -6,7 +6,7 @@
     const submitBtn  = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
     const resultText  = document.getElementById('result-text');
-    const otherCharitiesListBox = document.getElementById('other-charities-list-box'); // The new box for other charities
+    const otherCharitiesListBox = document.getElementById('charity-list-grid'); // The new box for other charities
 
     resultsBox.style.display = 'none';
     otherCharitiesListBox.style.display = 'none';
@@ -155,12 +155,8 @@
                 <a href="${charity.link}" target="_blank">Donate to ${charity.name}</a>
               </div>
             `).join('');
-    
-            // Append the static charity list below the result
-            otherCharitiesContent += `
-              <h3>Other Charities You Can Support:</h3>
-              ${staticCharityListHTML}
-            `;
+
+            otherCharitiesContent += `<div class="charity-list-grid">${staticCharityListHTML}</div>`;
             
             resultsBox.style.display = 'block'; // Ensure the results box is visible
             otherCharitiesListBox.innerHTML = otherCharitiesContent;
