@@ -5,6 +5,10 @@
     const submitBtn  = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
     const resultText  = document.getElementById('result-text');
+    const mainForm = document.getElementById('quiz-form');
+
+    // Initial state: hide results box
+    resultsBox.style.display = 'none';
   
     const getRadio = n =>
       (document.querySelector(`input[name="${n}"]:checked`) || {}).value || null;
@@ -12,9 +16,6 @@
     const getChecks = n =>
       Array.from(document.querySelectorAll(`input[name="${n}"]:checked`))
            .map(el => el.value);
-
-    // Initial state: hide results box
-    resultsBox.style.display = 'none';
   
     submitBtn.addEventListener('click', () => {
       const answers = {
@@ -24,12 +25,17 @@
         faith:   getRadio('faith'),
         support: getRadio('support')
       };
+
+      if (mainForm) {
+          mainForm.style.display = 'none';
+      } else {
+          console.warn("Element with ID 'quiz-form' not found. Cannot hide the questionnaire.");
+      }
   
       // Show results container
       resultsBox.style.display = 'block';
       resultText.innerHTML = '<p>Loading recommendations...</p>'; // Display loading in your resultText area
-      window.scrollTo(0, 0); // Scroll to the top immediately
-  
+      
       // Send answers to the backend API
       fetch('/api/charity-match', {
         method: 'POST',
@@ -47,7 +53,6 @@
 
           let resultHTML = ''; // Build the HTML string
 
-          const topMatchDetailsFromBackend = data.top_match_details;
           const backendCharities = data.other_charities || [];
   
           // Check if the response has the expected structure
@@ -56,7 +61,6 @@
             console.log("AI Result:", aiResult); // Log the raw result from the AI
   
           let matchedCharity = null;
-          let description = null;
           let donationLink = null;
           let charityDetails = null; // This variable will now hold the charity object found from backend data
           let finalDonationLink = null; // To hold the final link for HTML
@@ -78,9 +82,8 @@
             }
           }
           console.log("AI Extracted Link:", donationLink);
-          
           console.log("DEBUG: matchedCharity from AI:", matchedCharity);
-          console.log("DEBUG: backendCharities content (first 2 items):", backendCharities.slice(0, 2));
+          
           if (backendCharities.length > 0) {
               console.log("DEBUG: Example backendCharities[0].name:", backendCharities[0].name);
           }
@@ -124,7 +127,6 @@
               <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.name}</a>
             `;
           } else if (matchedCharity) {
-            let aiExtractedDescription = null;
             const aiDescMatch = aiResult.match(/\*\*\s*Description:\*\*\s*([\s\S]*?)(?=\*\*Link:|\*\*Impact:|\n{2,}|$)/i);
             if (aiDescMatch && aiDescMatch[1]) {
                 aiExtractedDescription = aiDescMatch[1].trim();
