@@ -28,6 +28,7 @@
       // Show results container
       resultsBox.style.display = 'block';
       resultText.innerHTML = '<p>Loading recommendations...</p>'; // Display loading in your resultText area
+      window.scrollTo(0, 0); // Scroll to the top immediately
   
       // Send answers to the backend API
       fetch('/api/charity-match', {
@@ -42,6 +43,11 @@
         .then(data => {
           console.log("API Response:", data); // Log the full API response for debugging
 
+          mainForm.style.display = 'none';
+
+          let resultHTML = ''; // Build the HTML string
+
+          const topMatchDetailsFromBackend = data.top_match_details;
           const backendCharities = data.other_charities || [];
   
           // Check if the response has the expected structure
@@ -123,8 +129,8 @@
             if (aiDescMatch && aiDescMatch[1]) {
                 aiExtractedDescription = aiDescMatch[1].trim();
             }
-            
-            resultText.innerHTML = `
+
+            resultHTML += `
               <strong>${matchedCharity}</strong><br />
               <p>Description not found in our local data.</p>
               <a href="${donationLink || '#'}" target="_blank">Donate to ${matchedCharity} (Link from AI)</a>
@@ -133,7 +139,7 @@
             finalDonationLink = donationLink || '#';
           } else {
             console.error("Error: Could not extract charity name from AI response.");
-            resultText.innerHTML = '⚠️ Unable to identify the charity from the AI response.';
+            resultHTML = '⚠️ Unable to identify the charity from the AI response.';
           }
 
           let charitiesToDisplayAsOthers = backendCharities;
@@ -153,12 +159,15 @@
           `).join('');
   
           // Append the static charity list below the result
-          resultText.innerHTML += `
+          resultHTML += `
             <h3>Other Charities You Can Support:</h3>
             ${staticCharityListHTML}
           `;
-  
-          resultsBox.style.display = 'block'; // Ensure the results box is visible
+
+          resultsContainer.innerHTML = resultHTML; // Set the complete HTML into the resultsContainer
+          resultsContainer.style.display = 'block'; // Ensure it's visible (already done, but good to re-confirm)
+
+          window.scrollTo(0, 0); // Scroll to the very top after results are displayed
           }
         })
         .catch(err => {
