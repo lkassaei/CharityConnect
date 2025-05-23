@@ -5,10 +5,6 @@
     const submitBtn  = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
     const resultText  = document.getElementById('result-text');
-    const mainForm = document.getElementById('quiz-form');
-
-    // Initial state: hide results box
-    resultsBox.style.display = 'none';
   
     const getRadio = n =>
       (document.querySelector(`input[name="${n}"]:checked`) || {}).value || null;
@@ -16,6 +12,9 @@
     const getChecks = n =>
       Array.from(document.querySelectorAll(`input[name="${n}"]:checked`))
            .map(el => el.value);
+
+    // Initial state: hide results box
+    resultsBox.style.display = 'none';
   
     submitBtn.addEventListener('click', () => {
       const answers = {
@@ -25,17 +24,11 @@
         faith:   getRadio('faith'),
         support: getRadio('support')
       };
-
-      if (mainForm) {
-          mainForm.style.display = 'none';
-      } else {
-          console.warn("Element with ID 'quiz-form' not found. Cannot hide the questionnaire.");
-      }
   
       // Show results container
       resultsBox.style.display = 'block';
       resultText.innerHTML = '<p>Loading recommendations...</p>'; // Display loading in your resultText area
-      
+  
       // Send answers to the backend API
       fetch('/api/charity-match', {
         method: 'POST',
@@ -49,10 +42,6 @@
         .then(data => {
           console.log("API Response:", data); // Log the full API response for debugging
 
-          mainForm.style.display = 'none';
-
-          let resultHTML = ''; // Build the HTML string
-
           const backendCharities = data.other_charities || [];
   
           // Check if the response has the expected structure
@@ -61,6 +50,7 @@
             console.log("AI Result:", aiResult); // Log the raw result from the AI
   
           let matchedCharity = null;
+          let description = null;
           let donationLink = null;
           let charityDetails = null; // This variable will now hold the charity object found from backend data
           let finalDonationLink = null; // To hold the final link for HTML
@@ -82,8 +72,9 @@
             }
           }
           console.log("AI Extracted Link:", donationLink);
-          console.log("DEBUG: matchedCharity from AI:", matchedCharity);
           
+          console.log("DEBUG: matchedCharity from AI:", matchedCharity);
+          console.log("DEBUG: backendCharities content (first 2 items):", backendCharities.slice(0, 2));
           if (backendCharities.length > 0) {
               console.log("DEBUG: Example backendCharities[0].name:", backendCharities[0].name);
           }
@@ -102,17 +93,7 @@
 
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
-            charityDetails = backendCharities.find(charity => {
-                if (charity.name) {
-                    const normalizedBackendCharityName = normalizeString(charity.name);
-                    // *** NEW DEBUGGING LOGS ***
-                    console.log(`DEBUG: Comparing Normalized: "${normalizedMatchedCharity}" (AI) vs "${normalizedBackendCharityName}" (Backend)`, `(Lengths: ${normalizedMatchedCharity.length} vs ${normalizedBackendCharityName.length})`);
-                    // *** END NEW DEBUGGING LOGS ***
-
-                    return normalizedBackendCharityName === normalizedMatchedCharity;
-                }
-                return false;
-            });
+            charityDetails = backendCharities.find(charity => charity.name && charity.name.toLowerCase() === matchedCharity.toLowerCase());
           }
 
           console.log("Matched Charity Name:", matchedCharity);
@@ -127,12 +108,7 @@
               <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.name}</a>
             `;
           } else if (matchedCharity) {
-            const aiDescMatch = aiResult.match(/\*\*\s*Description:\*\*\s*([\s\S]*?)(?=\*\*Link:|\*\*Impact:|\n{2,}|$)/i);
-            if (aiDescMatch && aiDescMatch[1]) {
-                aiExtractedDescription = aiDescMatch[1].trim();
-            }
-
-            resultHTML += `
+            resultText.innerHTML = `
               <strong>${matchedCharity}</strong><br />
               <p>Description not found in our local data.</p>
               <a href="${donationLink || '#'}" target="_blank">Donate to ${matchedCharity} (Link from AI)</a>
@@ -141,7 +117,7 @@
             finalDonationLink = donationLink || '#';
           } else {
             console.error("Error: Could not extract charity name from AI response.");
-            resultHTML = '⚠️ Unable to identify the charity from the AI response.';
+            resultText.innerHTML = '⚠️ Unable to identify the charity from the AI response.';
           }
 
           let charitiesToDisplayAsOthers = backendCharities;
@@ -161,15 +137,12 @@
           `).join('');
   
           // Append the static charity list below the result
-          resultHTML += `
+          resultText.innerHTML += `
             <h3>Other Charities You Can Support:</h3>
             ${staticCharityListHTML}
           `;
-
-          resultsContainer.innerHTML = resultHTML; // Set the complete HTML into the resultsContainer
-          resultsContainer.style.display = 'block'; // Ensure it's visible (already done, but good to re-confirm)
-
-          window.scrollTo(0, 0); // Scroll to the very top after results are displayed
+  
+          resultsBox.style.display = 'block'; // Ensure the results box is visible
           }
         })
         .catch(err => {
