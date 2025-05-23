@@ -104,9 +104,8 @@ Return charity name, description, and link.
     match = re.search(r"\*\*(.*?)\*\*", ai_result)
     matched_name = match.group(1) if match else None
 
-    charity_lines = CHARITIES.split("### ")[1:]
     all_charities = []
-    for block in charity_lines:
+    for block in CHARITIES_DATA:
         lines = block.strip().split("\n")
         name = lines[0].strip()
         link_line = next((line for line in lines if line.startswith("[Donation Page](")), None)
