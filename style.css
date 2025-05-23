@@ -188,6 +188,38 @@ body {
   grid-column: 1 / -1; /* Make the H3 span all columns of the grid */
 }
 
+#charity-list-grid { /* Target the ID directly */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+  gap: var(--spacing-lg);
+
+  /* Inherit/reapply other styles it needs as a container */
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-dark);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl);
+  max-width: 900px;
+  margin: var(--spacing-lg) auto var(--spacing-xxl) auto;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(10px);
+  text-align: left; /* Keep left alignment for text within the box */
+
+  /* Media Query for Responsiveness */
+  @media (max-width: 768px) {
+      grid-template-columns: 1fr; /* Force 1 column on smaller screens */
+  }
+}
+
+/* IMPORTANT: If you want the H3 inside it to be centered, keep its specific rule: */
+#charity-list-grid h3 {
+  color: var(--color-primary-dark);
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: var(--spacing-xl);
+  font-weight: 600;
+  text-align: center; /* This rule remains for the H3 within the grid container */
+}
+
 /* Styles for individual charity results (these will apply to both boxes) */
 .charity-result {
   margin-bottom: 0;
