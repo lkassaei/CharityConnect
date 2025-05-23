@@ -89,11 +89,21 @@
             };
 
             const normalizedMatchedCharity = normalizeString(matchedCharity);
-            console.log("DEBUG: Normalized AI Matched Charity:", normalizedMatchedCharity);
-            
+            console.log("DEBUG: Normalized AI Matched Charity:", normalizedMatchedCharity, `(Length: ${normalizedMatchedCharity.length})`);
+
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
-            charityDetails = backendCharities.find(charity => charity.name && charity.name.toLowerCase() === matchedCharity.toLowerCase());
+            charityDetails = backendCharities.find(charity => {
+                if (charity.name) {
+                    const normalizedBackendCharityName = normalizeString(charity.name);
+                    // *** NEW DEBUGGING LOGS ***
+                    console.log(`DEBUG: Comparing Normalized: "${normalizedMatchedCharity}" (AI) vs "${normalizedBackendCharityName}" (Backend)`, `(Lengths: ${normalizedMatchedCharity.length} vs ${normalizedBackendCharityName.length})`);
+                    // *** END NEW DEBUGGING LOGS ***
+
+                    return normalizedBackendCharityName === normalizedMatchedCharity;
+                }
+                return false;
+            });
           }
 
           console.log("Matched Charity Name:", matchedCharity);
@@ -108,6 +118,12 @@
               <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.name}</a>
             `;
           } else if (matchedCharity) {
+            let aiExtractedDescription = null;
+            const aiDescMatch = aiResult.match(/\*\*\s*Description:\*\*\s*([\s\S]*?)(?=\*\*Link:|\*\*Impact:|\n{2,}|$)/i);
+            if (aiDescMatch && aiDescMatch[1]) {
+                aiExtractedDescription = aiDescMatch[1].trim();
+            }
+            
             resultText.innerHTML = `
               <strong>${matchedCharity}</strong><br />
               <p>Description not found in our local data.</p>
