@@ -28,7 +28,6 @@ body {
     backdrop-filter: blur(10px); /* Subtle background blur */
     display: flex; /* Enable flexbox for the fieldset */
     flex-direction: column; /* Stack the legend and labels vertically */
-    align-items: center; /* Center items horizontally within the fieldset */
   }
   
   fieldset legend {
@@ -45,7 +44,6 @@ body {
   
   fieldset label {
     display: flex;
-    align-items: middle;
     width: 100%;
     margin-bottom: 20px;
     padding: 10px 0;
@@ -57,7 +55,7 @@ body {
   
   fieldset input[type="radio"],
   fieldset input[type="checkbox"] {
-    margin-right: 15px;
+    margin-right: 10px;
     vertical-align: middle;
     transform: scale(1.3); /* Slightly larger radio/checkbox */
   }
