@@ -1,3 +1,4 @@
+
 # app.py ----------------------------------------------------------
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS          # still handy if you later split front/back
@@ -26,7 +27,7 @@ CORS(app)
 # ---------- simple health‑check ---------------------------------
 @app.get("/")
 def home():
-    return "<h3>Backend up ✔ — go to <a href='/quiz'>/quiz</a> for the quiz.</h3>"
+    return "<h3>Backend up ✔ — go to <a href='/quiz'>/quiz</a> for the quiz.</h3>"
 
 # ---------- serve the quiz HTML ---------------------------------
 @app.get("/quiz")
