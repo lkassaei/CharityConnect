@@ -156,14 +156,13 @@
             `).join('');
     
             // Append the static charity list below the result
-            otherCharitiesContent += `
+            otherCharitiesListBox += `
               <h3>Other Charities You Can Support:</h3>
               ${staticCharityListHTML}
             `;
             
-            resultText.innerHTML = resultText.innerHTML;
             resultsBox.style.display = 'block'; // Ensure the results box is visible
-            //otherCharitiesListBox.innerHTML = otherCharitiesContent;
+            //otherCharitiesListBox.innerHTML = otherCharitiesListBox;
             //otherCharitiesListBox.style.display = 'block';
           }
         })
