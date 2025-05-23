@@ -76,13 +76,13 @@
           console.log("DEBUG: matchedCharity from AI:", matchedCharity);
           console.log("DEBUG: backendCharities content (first 2 items):", backendCharities.slice(0, 2));
           if (backendCharities.length > 0) {
-              console.log("DEBUG: Example backendCharities[0].charity:", backendCharities[0].charity);
+              console.log("DEBUG: Example backendCharities[0].name:", backendCharities[0].name);
           }
 
           if (matchedCharity) {
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
-            charityDetails = backendCharities.find(charity => charity.name.toLowerCase() === matchedCharity.toLowerCase());
+            charityDetails = backendCharities.find(charity => charity.name && charity.name.toLowerCase() === matchedCharity.toLowerCase());
           }
 
           console.log("Matched Charity Name:", matchedCharity);
@@ -112,7 +112,7 @@
           let charitiesToDisplayAsOthers = backendCharities;
           if (charityDetails) { // If a specific charity was found and displayed as the top match
               charitiesToDisplayAsOthers = backendCharities.filter(
-                  charity => charity.name.toLowerCase() !== charityDetails.name.toLowerCase()
+                  charity => charity.name && charity.name.toLowerCase() !== charityDetails.name.toLowerCase()
               );
           }
   
@@ -121,7 +121,7 @@
             <div class="charity-result">
               <strong>${charity.name}</strong><br />
               <p>${charity.description}</p>
-              <a href="${charity.donationLink}" target="_blank">Donate to ${charity.charity}</a>
+              <a href="${charity.link}" target="_blank">Donate to ${charity.name}</a>
             </div>
           `).join('');
   
