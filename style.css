@@ -99,11 +99,18 @@ body {
     padding: 40px;
     max-width: 700px;
     margin: 50px auto;
-    display: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     text-align: left;
     backdrop-filter: blur(10px);
   }
+
+  #results-container h2 { /* Styling for the "Your Charity Match" heading inside this box */
+    color: #1d3557;
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
   
   #results-container h3 {
     color: #1d3557;
@@ -141,82 +148,77 @@ body {
     text-decoration: none;
     border-bottom-color: #0056b3;
   }
-  
-  /* Style for charity list container */
-  #charity-list-container {
-    background: rgba(255, 255, 255, 0.9);
-    color: #3a506b;
-    border-radius: 16px;
-    padding: 40px;
-    max-width: 900px;
-    margin: 50px auto;
-    display: none;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-  }
-  
-  #charity-list-container h3 {
-    color: #1d3557;
-    font-size: 1.8rem;
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-weight: 600;
-    text-align: center;
-  }
-  
-  /* Add margin to separate sections */
-  #quiz-section,
-  #result-section,
-  #charity-list-section {
-    margin-bottom: 60px;
-  }
-  
-  /* For the charity list layout */
-  .charity-list-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Slightly wider min width */
-    gap: 30px;
-  }
-  
-  .charity-result {
-    margin-bottom: 0;
-    padding: 30px;
-    border-radius: 12px;
-    background-color: #f8f9fa; /* Lighter background for items */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    text-align: left;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .charity-result:hover {
-    transform: translateY(-5px); /* Subtle lift on hover */
-  }
-  
-  .charity-result strong {
-    font-size: 1.2rem;
-    color: #1d3557;
-    font-weight: 700;
-    display: block;
-    margin-bottom: 12px;
-  }
-  
-  .charity-result p {
-    margin-bottom: 15px;
-    line-height: 1.7;
-    font-size: 1rem;
-    color: #457b9d; /* Secondary color for description */
-  }
-  
-  .charity-result a {
-    color: #2e7d32; /* Dark green accent color for links */
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 3px;
-  }
-  
-  .charity-result a:hover {
-    color: #1b5e20; /* Darker green on hover */
-    border-bottom-color: #1b5e20;
-  }
+
+  /* NEW: Style for the "Other Charities" Box */
+#other-charities-list-box { /* Renamed from charity-list-container to avoid confusion */
+  background: rgba(255, 255, 255, 0.9);
+  color: #3a506b;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 900px; /* Wider for the grid layout */
+  margin: 30px auto 50px auto; /* Separate from the top match box */
+  /* display: none; Controlled by JS */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+
+#other-charities-list-box h3 {
+  color: #1d3557;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-align: center; /* Center the heading for the list */
+}
+
+/* For the charity list layout within the new box */
+.charity-list-grid { /* This class will wrap the individual charity-result divs */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+/* Styles for individual charity results (these will apply to both boxes) */
+.charity-result {
+  margin-bottom: 0;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.2s ease-in-out;
+}
+
+.charity-result:hover {
+  transform: translateY(-5px);
+}
+
+.charity-result strong {
+  font-size: 1.2rem;
+  color: #1d3557;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.charity-result p {
+  margin-bottom: 15px;
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #457b9d;
+}
+
+.charity-result a {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 3px;
+}
+
+.charity-result a:hover {
+  color: #1b5e20;
+  border-bottom-color: #1b5e20;
+}
