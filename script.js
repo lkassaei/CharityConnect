@@ -57,17 +57,17 @@
             let finalDonationLink = null; // To hold the final link for HTML
     
             // 1. Extract Charity Name (look for the first bold text)
-            const charityMatch = aiResult.match(/^(\*\*)(.*?)(\*\*)/m);
+            const charityMatch = aiResult.match(/\n\s*\*\*(.*?)\*\*/);
             if (charityMatch && charityMatch[2]) {
               matchedCharity = charityMatch[2].trim();
             }
 
             // 2. Extract Donation Link from AI (as a fallback)
-            const linkMatch = aiResult.match(/\*\*\s*Link:\*\*\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
+            const linkMatch = aiResult.match(/Link:\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
             if (linkMatch && linkMatch[1]) {
               donationLink = linkMatch[1];
             } else {
-              const linkUrlMatch = aiResult.match(/\*\*\s*Link:\*\*\s*(https?:\/\/[^\s]+)/i);
+              const linkUrlMatch = aiResult.match(/Link:\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
               if (linkUrlMatch && linkUrlMatch[1]) {
                 donationLink = linkUrlMatch[1];
               }
