@@ -138,7 +138,7 @@ Return charity name, description, and link.
 
     return jsonify({
         "choices": chat["choices"],
-        "other_charities": other_charities
+        "other_charities": other_charities_for_frontend
     })
 
 # ---------- entry‑point -----------------------------------------
