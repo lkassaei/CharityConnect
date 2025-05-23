@@ -158,8 +158,9 @@
             <h3>Other Charities You Can Support:</h3>
             ${staticCharityListHTML}
           `;
-            
-          resultsBox.style.display = 'block'; // Ensure the results box is visible
+          
+          window.scrollTo(0, 0);
+          resultsBox.style.display = resultText.innerHTML; // Ensure the results box is visible
           }
         })
         .catch(err => {
