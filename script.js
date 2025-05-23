@@ -159,7 +159,6 @@
             ${staticCharityListHTML}
           `;
             
-          window.scrollTo(0, 0);
           resultsBox.style.display = 'block'; // Ensure the results box is visible
           }
         })
