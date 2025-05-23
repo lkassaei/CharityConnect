@@ -3,11 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
     const resultText = document.getElementById('result-text');
-    const otherCharitiesListBox = document.getElementById('other-charities-list-box'); // Assuming you want this box to exist
+    const otherCharitiesListBox = document.getElementById('other-charities-list-box');
 
-    // Initial state: hide results box and other charities box
     resultsBox.style.display = 'none';
-    otherCharitiesListBox.style.display = 'none'; // Ensure this is hidden initially
+    otherCharitiesListBox.style.display = 'none';
 
     const getRadio = n =>
         (document.querySelector(`input[name="${n}"]:checked`) || {}).value || null;
@@ -16,15 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         Array.from(document.querySelectorAll(`input[name="${n}"]:checked`))
             .map(el => el.value);
 
-    // ***************************************************************
-    // IMPORTANT: normalizeString function moved here to be accessible globally
-    // ***************************************************************
     const normalizeString = (str) => {
         if (!str) return '';
-        // Remove text in parentheses (like WFP), then all non-alphanumeric, then lowercase
         return str.replace(/\([^)]*\)/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
     };
-    // ***************************************************************
 
     submitBtn.addEventListener('click', () => {
         const answers = {
@@ -35,12 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             support: getChecks('support')
         };
 
-        // Show results container and loading message
         resultsBox.style.display = 'block';
         resultText.innerHTML = '<p>Loading recommendations...</p>';
-        otherCharitiesListBox.style.display = 'none'; // Hide other charities box during loading
+        otherCharitiesListBox.style.display = 'none';
 
-        // Send answers to the backend API
         fetch('/api/charity-match', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -52,6 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             console.log("API Response:", data);
+
+            // --- NEW DEBUGGING LOGS HERE ---
+            console.log("DEBUG: data.choices:", data.choices);
+            if (data.choices && data.choices.length > 0) {
+                console.log("DEBUG: data.choices[0]:", data.choices[0]);
+                console.log("DEBUG: data.choices[0].message:", data.choices[0].message);
+                if (data.choices[0].message) {
+                    console.log("DEBUG: data.choices[0].message.content (type):", typeof data.choices[0].message.content);
+                }
+            }
+            // --- END NEW DEBUGGING LOGS ---
 
             const backendCharities = data.other_charities || [];
 
@@ -68,8 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let donationLink = null;
                 let charityDetails = null;
                 let finalDonationLink = null;
-
-                // --- UPDATED REGEXES FOR LATEST AI FORMAT ---
 
                 // 1. Extract Charity Name: Look for a bolded name immediately following a newline
                 // and before "Description:". This matches "**Mahak Society to Support Children with Cancer**"
@@ -90,11 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     donationLink = linkUrlMatch[1];
                 }
 
-                // --- END UPDATED REGEXES ---
-
                 console.log("AI Extracted Link:", donationLink);
                 console.log("DEBUG: matchedCharity from AI:", matchedCharity);
-                console.log("DEBUG: extractedDescription from AI:", description); // Log extracted description
+                console.log("DEBUG: extractedDescription from AI:", description);
                 console.log("DEBUG: backendCharities content (first 2 items):", backendCharities.slice(0, 2));
                 if (backendCharities.length > 0) {
                     console.log("DEBUG: Example backendCharities[0].name:", backendCharities[0].name);
@@ -119,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let topMatchContent = '';
                 if (charityDetails) {
-                    // Prefer backend data if found
                     finalDonationLink = charityDetails.link;
                     topMatchContent = `
                         <div class="charity-result recommended-charity">
@@ -129,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 } else if (matchedCharity) {
-                    // Use AI extracted data if no backend match, but a name was found
                     topMatchContent = `
                         <div class="charity-result recommended-charity">
                             <strong>${matchedCharity}</strong><br />
@@ -144,11 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     topMatchContent = '⚠️ Unable to identify the charity from the AI response.';
                 }
 
-                resultText.innerHTML = topMatchContent; // Put the top match content into resultText
+                resultText.innerHTML = topMatchContent;
 
                 let charitiesToDisplayAsOthers = backendCharities;
                 if (charityDetails) {
-                    // Filter out the top matched charity from the "other charities" list
                     charitiesToDisplayAsOthers = backendCharities.filter(
                         charity => charity.name && normalizeString(charity.name) !== normalizeString(charityDetails.name)
                     );
@@ -168,9 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
 
                 otherCharitiesListBox.innerHTML = otherCharitiesContent;
-                otherCharitiesListBox.style.display = 'block'; // Show the other charities box
+                otherCharitiesListBox.style.display = 'block';
 
-                resultsBox.style.display = 'block'; // Ensure the main results box is visible
+                resultsBox.style.display = 'block';
             } else {
                 console.error("Error: Backend response did not contain expected AI choices structure.", data);
                 resultText.innerHTML = '⚠️ An unexpected response format was received from the AI. Please try again.';
