@@ -6,7 +6,7 @@
     const submitBtn  = document.getElementById('submit-btn');
     const resultsBox = document.getElementById('results-container');
     const resultText  = document.getElementById('result-text');
-    const otherCharitiesListBox = document.getElementById('charity-list-grid'); // The new box for other charities
+    const otherCharitiesListBox = document.getElementById('other-charities-list-box'); // The new box for other charities
 
     resultsBox.style.display = 'none';
     otherCharitiesListBox.style.display = 'none';
