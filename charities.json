@@ -144,5 +144,103 @@
     "donationLink": "https://www.childrenofpersia.org/donate/",
     "type": ["Child Welfare", "Education"],
     "regions": ["Middle East"]
+  },
+  {
+    "charity": "ForAfrika",
+    "description": "ForAfrika is dedicated to sustainably empowering 20 million Africans to provide for themselves by 2032. They focus on crucial areas such as emergency relief, clean water access, food security, healthcare, education, and economic growth through locally-led initiatives.",
+    "donationLink": "https://forafrika.org/",
+    "type": ["Humanitarian Aid", "Development", "Education", "Health", "Food Security"],
+    "regions": ["Africa"]
+  },
+  {
+    "charity": "African Children's Fund",
+    "description": "This organization works to provide a brighter future for Africa's children by offering vital support, including food, clean water, and educational opportunities. They notably support girls' education by providing sanitary protection, ensuring consistent school attendance.",
+    "donationLink": "https://africanchildrensfund.org/",
+    "type": ["Child Protection", "Education", "Food Security", "Water & Sanitation"],
+    "regions": ["Africa"]
+  },
+  {
+    "charity": "ActionAid",
+    "description": "ActionAid works to build a more just and sustainable world, often responding swiftly to emergencies and partnering with local communities. They address social issues and support sustainable development across various African nations.",
+    "donationLink": "https://actionaid.org/",
+    "type": ["Humanitarian Aid", "Development", "Social Justice"],
+    "regions": ["Africa", "Asia", "Global"]
+  },
+  {
+    "charity": "The Asia Foundation",
+    "description": "An international nonprofit organization committed to solving social and economic challenges in Asia and the Pacific. With over 70 years of experience, they work with partners across more than 20 countries to improve governance, foster economic growth, promote environmental resilience, and empower women.",
+    "donationLink": "https://asiafoundation.org/",
+    "type": ["Development", "Governance", "Economic Empowerment", "Environmental Protection", "Women's Empowerment"],
+    "regions": ["Asia", "Oceania"]
+  },
+  {
+    "charity": "Give2Asia",
+    "description": "A U.S.-based public charity that connects donors with trusted local charities across Asia. They facilitate cross-border giving, focusing on disaster response, community strengthening, healthcare, and education initiatives, ensuring effective and tax-deductible donations.",
+    "donationLink": "https://give2asia.org/",
+    "type": ["Disaster Relief", "Community Development", "Healthcare", "Education"],
+    "regions": ["Asia"]
+  },
+  {
+    "charity": "BRAC",
+    "description": "One of the largest development organizations in the world, originating from Bangladesh. BRAC addresses a range of issues from microfinancing to disaster management, fighting for human rights and sustainable development in several Asian countries.",
+    "donationLink": "https://www.brac.net/",
+    "type": ["Development", "Microfinance", "Human Rights", "Disaster Management"],
+    "regions": ["Asia", "Africa", "Global"]
+  },
+  {
+    "charity": "The European Cultural Foundation",
+    "description": "Focuses on promoting cultural exchange and fostering creativity across Europe. They support NGOs involved in arts and culture to strengthen community ties and promote social cohesion through innovative projects.",
+    "donationLink": "https://culturalfoundation.eu/",
+    "type": ["Arts & Culture", "Community Development", "Education"],
+    "regions": ["Europe"]
+  },
+  {
+    "charity": "Canadian Red Cross",
+    "description": "Provides humanitarian aid in Canada and internationally, including disaster relief, emergency preparedness, and community health services. They are a well-established and trusted organization for crisis response and long-term support.",
+    "donationLink": "https://www.redcross.ca/",
+    "type": ["Humanitarian Aid", "Disaster Relief", "Health Services"],
+    "regions": ["North America", "Global"]
+  },
+  {
+    "charity": "Habitat for Humanity Mexico",
+    "description": "Works to build strength, stability, and self-reliance through shelter. Habitat for Humanity Mexico partners with families in need to build and improve their homes, addressing housing poverty and promoting community development.",
+    "donationLink": "https://www.habitatmexico.org/",
+    "type": ["Housing", "Community Development"],
+    "regions": ["North America"]
+  },
+  {
+    "charity": "Habitat for Humanity",
+    "description": "Helps families in numerous countries across Latin America and the Caribbean build a better place to call home. Through partnerships, they support families in achieving strength, stability, and self-reliance through improved housing.",
+    "donationLink": "https://www.habitat.org/where-we-work/latin-america-caribbean",
+    "type": ["Housing", "Community Development"],
+    "regions": ["South America", "Caribbean", "Central America", "Global"]
+  },
+  {
+    "charity": "Caritas Internationalis",
+    "description": "A confederation of Catholic aid organizations, Caritas has a long history of working for the poor in Latin America and the Caribbean. They address natural and man-made disasters, provide healthcare, and focus on peace, social and economic justice, and safe migration.",
+    "donationLink": "https://www.caritas.org/where-caritas-work/latin-america/",
+    "type": ["Humanitarian Aid", "Development", "Healthcare", "Social Justice", "Migration"],
+    "regions": ["South America", "Caribbean", "Central America", "Global"]
+  },
+  {
+    "charity": "Australia for UNHCR",
+    "description": "Raises funds and provides support for the UN's Refugee Agency (UNHCR), offering financial aid and resources to support refugees and displaced populations within and from the Oceania region.",
+    "donationLink": "https://www.unrefugees.org.au/",
+    "type": ["Refugee Support", "Humanitarian Aid"],
+    "regions": ["Oceania", "Global"]
+  },
+  {
+    "charity": "Oceana",
+    "description": "The largest international advocacy organization dedicated solely to ocean conservation. While global in its mission, it has significant campaigns and impact on marine ecosystems within the Oceania region, working to protect and restore the abundance of the world's oceans.",
+    "donationLink": "https://oceana.org/",
+    "type": ["Environmental Conservation", "Marine Conservation"],
+    "regions": ["Global", "Oceania"]
+  },
+  {
+    "charity": "Clean Up Australia",
+    "description": "Inspires and mobilizes communities to improve and conserve the environment and eliminate waste across Australia. They have a long-standing track record of engaging the public in environmental clean-up and conservation efforts.",
+    "donationLink": "https://www.cleanup.org.au/",
+    "type": ["Environmental Conservation", "Community Engagement"],
+    "regions": ["Oceania"]
   }
 ]
