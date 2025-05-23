@@ -112,6 +112,8 @@ Return charity name, description, and link.
     match = re.search(r"\*\*(.*?)\*\*", ai_result)
     matched_name = match.group(1) if match else None
 
+    print(f"DEBUG (Python): AI matched_name: {matched_name}")
+
     # --- THIS ENTIRE BLOCK IS THE CORE CORRECTION ---
     # We use CHARITIES_DATA directly, no string parsing needed.
     other_charities_for_frontend = []
@@ -126,15 +128,13 @@ Return charity name, description, and link.
         for item in CHARITIES_DATA
     ]
 
-    if matched_name:
-        # Filter out the matched charity from the formatted list
-        other_charities_for_frontend = [
-            c for c in all_formatted_charities if c.get("name") != matched_name
-        ]
-    else:
-        # If AI didn't return a specific match, return all charities.
-        # This will include the one that *might* have been matched if AI had picked one.
-        other_charities_for_frontend = all_formatted_charities
+    print(f"DEBUG (Python): All formatted charities (first 3): {all_formatted_charities[:3]}")
+    print(f"DEBUG (Python): Is UNICEF in all_formatted_charities? {any(c.get('name') == 'UNICEF' for c in all_formatted_charities)}")
+    
+    other_charities_for_frontend = all_formatted_charities
+
+    print(f"DEBUG (Python): other_charities_for_frontend (first 3 after filtering): {other_charities_for_frontend[:3]}")
+    print(f"DEBUG (Python): Is UNICEF in other_charities_for_frontend? {any(c.get('name') == 'UNICEF' for c in other_charities_for_frontend)}")
 
     return jsonify({
         "choices": chat["choices"],
