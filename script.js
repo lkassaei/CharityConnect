@@ -61,7 +61,6 @@
             matchedCharity = charityMatch[2].trim();
           }
 
-
           // 2. Extract Donation Link from AI (as a fallback)
           const linkMatch = aiResult.match(/\*\*\s*Link:\*\*\s*\[.*?\]\((https?:\/\/[^\)]+)\)/i);
           if (linkMatch && linkMatch[1]) {
@@ -73,25 +72,29 @@
             }
           }
           console.log("AI Extracted Link:", donationLink);
+          
+          console.log("DEBUG: matchedCharity from AI:", matchedCharity);
+          console.log("DEBUG: backendCharities content (first 2 items):", backendCharities.slice(0, 2));
+          if (backendCharities.length > 0) {
+              console.log("DEBUG: Example backendCharities[0].charity:", backendCharities[0].charity);
+          }
 
           if (matchedCharity) {
-            // *** HIGHLIGHTED CHANGE START ***
             // 3. Search the backendCharities (which replaces your old charityList) for a match
             //    Access 'charity.charity' because that's the key name in your JSON objects.
-            charityDetails = backendCharities.find(charity => charity.charity && charity.charity.toLowerCase() === matchedCharity.toLowerCase());
-            // *** HIGHLIGHTED CHANGE END ***
+            charityDetails = backendCharities.find(charity => charity.name.toLowerCase() === matchedCharity.toLowerCase());
           }
 
           console.log("Matched Charity Name:", matchedCharity);
-          console.log("Found Charity Details:", charityDetails);
+          console.log("Found Charity Details Object:", charityDetails);
 
           if (charityDetails) {
             description = charityDetails.description;
             finalDonationLink = charityDetails.link; // Backend's link is preferred
             resultText.innerHTML = `
-              <strong>${charityDetails.charity}</strong><br />
+              <strong>${charityDetails.name}</strong><br />
               <p>${charityDetails.description}</p>
-              <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.charity}</a>
+              <a href="${finalDonationLink}" target="_blank">Donate to ${charityDetails.name}</a>
             `;
           } else if (matchedCharity) {
             resultText.innerHTML = `
@@ -109,14 +112,14 @@
           let charitiesToDisplayAsOthers = backendCharities;
           if (charityDetails) { // If a specific charity was found and displayed as the top match
               charitiesToDisplayAsOthers = backendCharities.filter(
-                  charity => charity.name.toLowerCase() !== charityDetails.charity.toLowerCase()
+                  charity => charity.name.toLowerCase() !== charityDetails.name.toLowerCase()
               );
           }
   
           // Display the static charity list under the result
           const staticCharityListHTML = charitiesToDisplayAsOthers.map(charity => `
             <div class="charity-result">
-              <strong>${charity.charity}</strong><br />
+              <strong>${charity.name}</strong><br />
               <p>${charity.description}</p>
               <a href="${charity.donationLink}" target="_blank">Donate to ${charity.charity}</a>
             </div>
