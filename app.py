@@ -28,13 +28,13 @@ def getAPIKey():
         secret_resource_name = f"projects/{PROJECT_ID}/secrets/{SECRET_NAME}/versions/{API_KEY_VERSION}"
         response = client.access_secret_version(request={"name": secret_resource_name})
         YOUR_API_KEY = response.payload.data.decode("UTF-8")
-        print(f"Successfully loaded API Key from Secret Manager: {SECRET_NAME}")
+        print(f"Successfully loaded API Key from Secret Manager: {SECRET_NAME}"+"\n")
     except Exception as e:
-        print(f"Error loading API Key from Secret Manager: {e}")
-        print("Please ensure the SECRET_NAME and PROJECT_ID are correct and the service account has 'Secret Manager Secret Accessor' role.")
+        print(f"Error loading API Key from Secret Manager: {e}"+"\n")
+        print("Please ensure the SECRET_NAME and PROJECT_ID are correct and the service account has 'Secret Manager Secret Accessor' role."+"\n")
         # Fallback for local development or if you still need a hardcoded key for testing (REMOVE IN PROD)
         YOUR_API_KEY =  os.getenv("LLAMA_KEY")
-        print("LLAMA API Key from local variable:"+YOUR_API_KEY)
+        print("LLAMA API Key from local variable:"+YOUR_API_KEY+"\n")
     return YOUR_API_KEY   
 #    return "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
 
@@ -75,10 +75,10 @@ def load_charities():
         with open('charities.json', 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
-        print("Error: charities.json not found. Make sure the file is in the correct directory.")
+        print("Error: charities.json not found. Make sure the file is in the correct directory."+"\n")
         return []
     except json.JSONDecodeError:
-        print("Error: Could not decode charities.json. Check for JSON syntax errors.")
+        print("Error: Could not decode charities.json. Check for JSON syntax errors."+"\n")
         return []
 
 CHARITIES_DATA = load_charities()
@@ -136,16 +136,16 @@ Return charity name, description, and link.
         chat = resp.json()
         ai_result = chat["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
-        print(f"API request failed: {e}")
+        print(f"API request failed: {e}"+"\n")
         return jsonify({"error": "Failed to get response from AI API"}), 500
     except (KeyError, IndexError) as e:
-        print(f"Error parsing AI response: {e}. Full response: {json.dumps(chat, indent=2)}")
+        print(f"Error parsing AI response: {e}. Full response: {json.dumps(chat, indent=2)}"+"\n")
         return jsonify({"error": "Unexpected AI response format from Together AI"}), 500
 
     match = re.search(r"\*\*(.*?)\*\*", ai_result)
     matched_name = match.group(1) if match else None
 
-    print(f"DEBUG (Python): AI matched_name: {matched_name}")
+    print(f"DEBUG (Python): AI matched_name: {matched_name}"+"\n")
 
     # --- THIS ENTIRE BLOCK IS THE CORE CORRECTION ---
     # We use CHARITIES_DATA directly, no string parsing needed.
@@ -161,13 +161,13 @@ Return charity name, description, and link.
         for item in CHARITIES_DATA
     ]
 
-    print(f"DEBUG (Python): All formatted charities (first 3): {all_formatted_charities[:3]}")
-    print(f"DEBUG (Python): Is UNICEF in all_formatted_charities? {any(c.get('name') == 'UNICEF' for c in all_formatted_charities)}")
+    print(f"DEBUG (Python): All formatted charities (first 3): {all_formatted_charities[:3]}"+"\n")
+    print(f"DEBUG (Python): Is UNICEF in all_formatted_charities? {any(c.get('name') == 'UNICEF' for c in all_formatted_charities)}"+"\n")
     
     other_charities_for_frontend = all_formatted_charities
 
-    print(f"DEBUG (Python): other_charities_for_frontend (first 3 after filtering): {other_charities_for_frontend[:3]}")
-    print(f"DEBUG (Python): Is UNICEF in other_charities_for_frontend? {any(c.get('name') == 'UNICEF' for c in other_charities_for_frontend)}")
+    print(f"DEBUG (Python): other_charities_for_frontend (first 3 after filtering): {other_charities_for_frontend[:3]}"+"\n")
+    print(f"DEBUG (Python): Is UNICEF in other_charities_for_frontend? {any(c.get('name') == 'UNICEF' for c in other_charities_for_frontend)}"+"\n")
 
     return jsonify({
         "choices": chat["choices"],
