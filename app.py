@@ -8,10 +8,16 @@ import os, requests
 import re
 import json # Import the json module
 
+#---------- Get API Key from GCP Secret Manager ------------------
+
+def getAPIKey():
+    return "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
+
 # ---------- env --------------------------------------------------
-load_dotenv()
+# load_dotenv()
 # API_KEY = os.getenv("TOGETHER_API_KEY")
-API_KEY = "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
+API_KEY = getAPIKey()
+
 if not API_KEY:
     raise ValueError("TOGETHER_API_KEY is not set in .env or env vars")
 
