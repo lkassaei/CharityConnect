@@ -14,8 +14,6 @@ from google.cloud import secretmanager
 def getAPIKey():
 
     # --- Configuration for Secret Manager ---
-    # Replace 'YOUR_PROJECT_ID' with your actual GCP Project ID
-    # Replace 'YOUR_SECRET_NAME' with the name you gave your secret in Secret Manager
     PROJECT_ID = "charityconnect-457700" 
     SECRET_NAME = "llama_key" 
     API_KEY_VERSION = "latest" 
@@ -37,7 +35,6 @@ def getAPIKey():
         YOUR_API_KEY =  os.getenv("LLAMA_KEY")
         print("LLAMA API Key from local variable:"+YOUR_API_KEY+"\n")
     return YOUR_API_KEY   
-#    return "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
 
 # ---------- env --------------------------------------------------
 # load_dotenv()
