@@ -7,11 +7,36 @@ from dotenv import load_dotenv
 import os, requests
 import re
 import json # Import the json module
+from google.cloud import secretmanager
 
 #---------- Get API Key from GCP Secret Manager ------------------
 
 def getAPIKey():
-    return "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
+
+    # --- Configuration for Secret Manager ---
+    # Replace 'YOUR_PROJECT_ID' with your actual GCP Project ID
+    # Replace 'YOUR_SECRET_NAME' with the name you gave your secret in Secret Manager
+    PROJECT_ID = "charityconnect-457700" 
+    SECRET_NAME = "llama_key" 
+    API_KEY_VERSION = "latest" 
+
+    # Initialize the Secret Manager client outside of your request handling
+    # to avoid re-initializing it on every request.
+    try:
+        client = secretmanager.SecretManagerServiceClient()
+        # Build the resource name of the secret
+        secret_resource_name = f"projects/{PROJECT_ID}/secrets/{SECRET_NAME}/versions/{API_KEY_VERSION}"
+        response = client.access_secret_version(request={"name": secret_resource_name})
+        YOUR_API_KEY = response.payload.data.decode("UTF-8")
+        print(f"Successfully loaded API Key from Secret Manager: {SECRET_NAME}")
+    except Exception as e:
+        print(f"Error loading API Key from Secret Manager: {e}")
+        print("Please ensure the SECRET_NAME and PROJECT_ID are correct and the service account has 'Secret Manager Secret Accessor' role.")
+        # Fallback for local development or if you still need a hardcoded key for testing (REMOVE IN PROD)
+        YOUR_API_KEY =  os.getenv("LLAMA_KEY")
+        print("LLAMA API Key from local variable:"+YOUR_API_KEY)
+    return YOUR_API_KEY   
+#    return "7d5882b655c97395f44585d73e8f92989a12e9277b407479fc1282e8a34e7245"
 
 # ---------- env --------------------------------------------------
 # load_dotenv()
