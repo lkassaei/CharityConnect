@@ -29,6 +29,7 @@ def getAPIKey():
         response = client.access_secret_version(request={"name": secret_resource_name})
         YOUR_API_KEY = response.payload.data.decode("UTF-8")
         print(f"Successfully loaded API Key from Secret Manager: {SECRET_NAME}"+"\n")
+        return YOUR_API_KEY
     except Exception as e:
         print(f"Error loading API Key from Secret Manager: {e}"+"\n")
         print("Please ensure the SECRET_NAME and PROJECT_ID are correct and the service account has 'Secret Manager Secret Accessor' role."+"\n")
